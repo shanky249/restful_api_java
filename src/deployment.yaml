@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: message-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: message-app
+  template:
+    metadata:
+      labels:
+        app: message-app
+    spec:
+      containers:
+        - name: message-app
+          image: crossvale-docker-registry/message-app:latest
+          ports:
+            - containerPort: 8080

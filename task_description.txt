@@ -1,0 +1,69 @@
+Here is the technical test we propose to you. Attached is the db needed for the exercise (testdb.db). Clarity in the code and tests will be positively evaluated.
+
+In this exercise, you will develop a RESTful API microservice using Java Spring Boot. This microservice will provide an API capable of performing fundamental CRUD (Create, Read, Update, Delete) operations on a resource. Additionally, you will work with JSON Web Tokens (JWT) for authentication and authorization, make HTTP requests to third-party services, and document the process of building, configuring, and deploying your API as a Docker image for microservice deployment.
+
+Finally, as OPTIONAL, this microservice will expose a REST API, and you must provide the API definition using OpenAPI/Swagger.
+
+This exercise will utilize an SQLite3 (https://www.sqlite.org/download.html) database for data storage: demodb.db (attached).
+
+Prerequisites
+To get the most out of this exercise, you should have a basic understanding of programming concepts, C#, Java and programming language, and familiarity with RESTful API principles.
+
+Exercises
+Exercise 1
+Expose a CRUD message API.
+
+Message API
+GET /message/all: get all messages in the table.
+GET /message/{messageId}: get the message with the provided Id.
+DELETE /message/{messageId}: Delete the message.
+POST /message: Insert the message in the table. It should return the inserted object.
+PUT /message/{messageId}: Update the selected message.
+Example of requests:
+
+curl -X GET -vvv http://localhost::8080/message/all
+curl -X GET -vvv http://localhost::8080/message/1
+curl -X DELETE -vvv http://localhost::8080/message/1
+curl -X POST -vvv http://localhost::8080/message  -H 'Content-Type: application/json; charset=utf-8' -d '{"message":"your new message"}'
+curl -X PUT -vvv http://localhost::8080/message/4  -H 'Content-Type: application/json; charset=utf-8' -d '{"id": 4, "message":"your message"}'
+Exercise 2
+Add a service to create a Json Web Token (JWT) and another one to valite it.
+
+JWT API
+GET /jwt/build?issuer={issuer}&subject={subject}: this service builds a JWT with the incoming issuer and subject. If those params are not received, it will build a token with the default values issuer=anonymous, and subject=anonymous. Token must be valid for X seconds
+GET /jwt/validate: this service validates the JWT token received in Authorization header.
+Default values must be included in the application configuration settings.
+
+Algorithm: Hmac Sha256
+Key: 12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678
+Valid Issuer: xv
+Token validity in seconds: 60
+Example of requests:
+
+# 1. Build a JWT using default values
+curl -X GET -vvv http://localhost::8080/jwt/build
+# 2. Build a JWT using the provided issuer and subject
+curl -X GET -vvv 'http://localhost::8080/jwt/build?issuer=xv&subject=test'
+# 3. Validate a JWT:
+curl -X GET -vvv http://localhost::8080/jwt/validate -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwibmJmIjoxNjk1ODI4MTYyLCJleHAiOjE2OTU4MjgxODIsImlzcyI6Inh2In0.wmOdX_y-xLcKop_PljJagDJZtB7Ydsq31B7TtQvxZNA'
+Exercise 3
+Create the Rick & Morty API that will do a request to a third pary. In this exercise you are going to expose an API (/richandmorty/character) that retrieves the same info as https://rickandmortyapi.com/api/character API.
+
+If the requested API replies with and error, our API must reply with a message to explain it: if response != success, reply with the error code and a message description like this one: Request to the external API failed with status 404-NotFound.
+
+Rick And Morty API
+GET /richandmorty/character/{characterId}: retrieves a character.
+Example of requests:
+
+curl -X GET -vvv http://localhost::8080/api/richandmorty/character/50
+# this request must do a request to https://rickandmortyapi.com/api/character/50 and reply with the same output.
+Exercise 5
+Build the microservice image (don't need to attach it) and prepare all the yaml neededs to deploy it with a Kubernetes or OpenShift.
+
+OPTIONAL: Exercise 6
+Provide the API definition using OpenAPI/Swagger of those services.
+
+Exercise 7
+Create d README.md file with all the information needed for a developer to test it (Example: mvn test), run it locally (Example: dotnet run), and how to build and run the image locally using Docker.
+
+If you completed the optional step (create a OpenAPI/Swagger), document how to access it.

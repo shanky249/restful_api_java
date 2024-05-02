@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: message-app-ingress
+spec:
+  rules:
+    - host: crossvale-hostname.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: message-app-service
+                port:
+                  number: 8080
